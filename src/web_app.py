@@ -2,11 +2,28 @@ import gradio as gr
 import pygwalker as pyg
 import pandas as pd
 import sqlite3
+import logging
+import os
+from datetime import datetime
 from pygwalker.api.gradio import PYGWALKER_ROUTE, get_html_on_gradio
 
+# Configure logging
+log_dir = '/app/logs'
+os.makedirs(log_dir, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(f'{log_dir}/web_app.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('gradio_app')
 def load_data():
     """Charge l'ensemble des données depuis SQLite en DataFrames pandas"""
+    logger.info("Starting data loading process from SQLite database...")
     conn = sqlite3.connect('/db/analysis.db')
+    
     
     # Chargement des ventes détaillées
     df_ventes = pd.read_sql_query("""
@@ -57,9 +74,11 @@ def load_data():
     df_ventes['date'] = pd.to_datetime(df_ventes['date'])
     
     conn.close()
+    logger.info("Successfully loaded all datasets from SQLite")
     return df_ventes, df_magasins, df_produits
 
 # Configuration de l'interface Gradio
+logger.info("Initializing Gradio interface...")
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# Dashboard d'Analyse des Ventes")
     gr.Markdown("""
@@ -114,12 +133,19 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 gr.HTML(pyg_produits)
         
     except Exception as e:
-        gr.Error(f"Erreur lors du chargement des données: {str(e)}")
+        error_msg = f"Erreur lors du chargement des données: {str(e)}"
+        logger.error(error_msg, exc_info=True)
+        gr.Error(error_msg)
 
 # Configuration du serveur pour Docker
 if __name__ == "__main__":
-    demo.launch(
-        server_name="0.0.0.0",
-        server_port=7860,
-        app_kwargs={"routes": [PYGWALKER_ROUTE]}
-    )
+    logger.info("Starting Gradio server on 0.0.0.0:7860...")
+    try:
+        demo.launch(
+            server_name="0.0.0.0",
+            server_port=7860,
+            app_kwargs={"routes": [PYGWALKER_ROUTE]}
+        )
+    except Exception as e:
+        logger.error(f"Failed to start Gradio server: {str(e)}", exc_info=True)
+        raise

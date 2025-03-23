@@ -19,9 +19,8 @@ services:
     ports:
      - "7860:7860"  # Port Gradio
     volumes:
-     - ./data:/db
-     - ./src:/app
+      - ./data:/db
+      - ./src:/app
+      - ./src/logs:/app/logs
     environment:
      - DATABASE_PATH=/db
-    command: >
-     bash -c "python /app/main.py && python /app/web_app.py"
