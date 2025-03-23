@@ -22,5 +22,6 @@ services:
       - ./data:/db
       - ./src:/app
       - ./src/logs:/app/logs
+      - ./historical_data:/app/historical_data
     environment:
      - DATABASE_PATH=/db

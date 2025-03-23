@@ -8,12 +8,15 @@ import pytz
 import logging
 from datetime import datetime
 
+# Create logs directory
+os.makedirs('/app/logs', exist_ok=True)
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('data_fetcher.log'),
+        logging.FileHandler('/app/logs/data_fetcher.log'),
         logging.StreamHandler()
     ]
 )
@@ -60,10 +63,15 @@ def load_csv_from_url(url):
     logger.info(f"Colonnes disponibles : {df.columns.tolist()}")
     return df
 
+from csv_exporter import CSVExporter
+
 def analyze_data():
     try:
         logger.info("Initialisation de la base de données...")
         conn, cursor = setup_database()
+        
+        # Initialize CSV exporter
+        csv_exporter = CSVExporter()
 
         # Dictionary of CSV URLs
         urls = {
@@ -170,8 +178,22 @@ def analyze_data():
 
         logger.info(f"\nNombre total d'employés : {total_employes}")
 
+        # Export all data to CSV files
+        analysis_results = {
+            'total_revenue': chiffre_affaires,
+            'total_employees': total_employes,
+            'store_data': [(m[0], m[1], m[2], cursor.execute("SELECT Nombre_de_salaries FROM magasins WHERE ID_Magasin = ?", (m[0],)).fetchone()[0])
+                          for m in ca_par_magasin],
+            'product_data': ventes_par_produit,
+            'total_stock': total_stock,
+            'stock_value': valeur_stock
+        }
+        
+        csv_exporter.export_all_data(analysis_results)
+        logger.info("CSV export completed successfully")
+
     except Exception as e:
-        print(f"Erreur : {str(e)}")
+        logger.error(f"Erreur : {str(e)}")
         raise
     finally:
         if 'conn' in locals():
