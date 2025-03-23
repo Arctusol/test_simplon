@@ -137,21 +137,26 @@ def analyze_data():
         cursor.execute("SELECT SUM(Nombre_de_salaries) FROM magasins")
         total_employes = cursor.fetchone()[0]
 
+        # Display du chiffre d'affaires total
         print("\nRésultats :")
         print(f"Chiffre d'affaires total : {chiffre_affaires:.2f} €")
-        
+
+        # Display du chiffre d'affaires par magasin
         print(f"\nChiffre d'affaires par magasin :")
         for magasin in ca_par_magasin:
             print(f"- {magasin[1]} (ID: {magasin[0]}): {magasin[2]:.2f} €")
-            
+
+        #Displau des ventes par produit    
         print(f"\nVentes par produit :")
         for produit in ventes_par_produit:
             print(f"- {produit[0]}: {produit[1]} unités, CA: {produit[2]:.2f} €")
-            
+        
+        # Display de la valeur du stock en attente
         print(f"\nStock :")
         print(f"- Quantité totale en stock : {total_stock}")
         print(f"- Valeur totale du stock : {valeur_stock:.2f} €")
-        
+
+        # Display du nombre total d'employés
         print(f"\nNombre total d'employés : {total_employes}")
 
     except Exception as e:
