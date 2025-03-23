@@ -79,32 +79,32 @@ erDiagram
     PRODUITS ||--o{ VENTES : "concerne"
     
     MAGASINS {
-        integer ID_Magasin PK
+        integer ID_Magasin PK "Primary Key"
         string Ville
         integer Nombre_de_salaries
     }
     
     PRODUITS {
-        string ID_Reference_produit PK
+        string ID_Reference_produit PK "Primary Key"
         string Nom
         decimal Prix
         integer Stock
     }
     
     VENTES {
-        date Date
-        string ID_Reference_produit FK
-        integer ID_Magasin FK
+        date Date PK "Part of composite PK"
+        string ID_Reference_produit FK "FK & Part of composite PK"
+        integer ID_Magasin FK "FK & Part of composite PK"
         integer Quantite
-        PK(date, ID_Reference_produit, ID_Magasin)
     }
 ```
 
 Caractéristiques principales :
-- Table **VENTES** avec clé primaire composite (Date, ID_Reference_produit, ID_Magasin)
+- Table **VENTES** avec clé primaire composite sur trois champs (Date, ID_Reference_produit, ID_Magasin)
 - Relations one-to-many entre MAGASINS/PRODUITS et VENTES
-- Gestion des stocks et prix dans PRODUITS
-- Données géographiques et RH dans MAGASINS
+- Table **PRODUITS** gérant le catalogue (prix, stocks)
+- Table **MAGASINS** stockant les informations géographiques et RH
+- Intégrité référentielle assurée par les clés étrangères
 
 ## 🚀 Installation
 
