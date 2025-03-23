@@ -1,0 +1,499 @@
+[
+    {
+      "config": {
+        "defaultAggregated": true,
+        "geoms": [
+          "rect"
+        ],
+        "coordSystem": "generic",
+        "limit": -1,
+        "timezoneDisplayOffset": 0
+      },
+      "encodings": {
+        "dimensions": [
+          {
+            "fid": "date",
+            "name": "date",
+            "basename": "date",
+            "semanticType": "temporal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Quantite",
+            "name": "Quantite",
+            "basename": "Quantite",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Ville",
+            "name": "Ville",
+            "basename": "Ville",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Effectif",
+            "name": "Effectif",
+            "basename": "Effectif",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "gw_mea_key_fid",
+            "name": "Measure names",
+            "analyticType": "dimension",
+            "semanticType": "nominal",
+            "offset": 0
+          }
+        ],
+        "measures": [
+          {
+            "fid": "Prix",
+            "name": "Prix",
+            "basename": "Prix",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "Chiffre_Affaires",
+            "name": "Chiffre_Affaires",
+            "basename": "Chiffre_Affaires",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "gw_count_fid",
+            "name": "Row count",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "computed": true,
+            "expression": {
+              "op": "one",
+              "params": [],
+              "as": "gw_count_fid"
+            },
+            "offset": 0
+          },
+          {
+            "fid": "gw_mea_val_fid",
+            "name": "Measure values",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          }
+        ],
+        "rows": [
+          {
+            "fid": "Quantite",
+            "name": "Quantite",
+            "basename": "Quantite",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          }
+        ],
+        "columns": [
+          {
+            "fid": "Ville",
+            "name": "Ville",
+            "basename": "Ville",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          }
+        ],
+        "color": [
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          }
+        ],
+        "opacity": [],
+        "size": [],
+        "shape": [],
+        "radius": [],
+        "theta": [],
+        "longitude": [],
+        "latitude": [],
+        "geoId": [],
+        "details": [],
+        "filters": [],
+        "text": []
+      },
+      "layout": {
+        "showActions": false,
+        "showTableSummary": false,
+        "stack": "stack",
+        "interactiveScale": false,
+        "zeroScale": true,
+        "size": {
+          "mode": "auto",
+          "width": 320,
+          "height": 200
+        },
+        "format": {},
+        "geoKey": "name",
+        "resolve": {
+          "x": false,
+          "y": false,
+          "color": false,
+          "opacity": false,
+          "shape": false,
+          "size": false
+        },
+        "scaleIncludeUnmatchedChoropleth": false,
+        "showAllGeoshapeInChoropleth": false,
+        "colorPalette": "",
+        "useSvg": false,
+        "scale": {
+          "opacity": {},
+          "size": {}
+        }
+      },
+      "visId": "gw_TKte",
+      "name": "Chart 2"
+    },
+    {
+      "config": {
+        "defaultAggregated": true,
+        "geoms": [
+          "auto"
+        ],
+        "coordSystem": "generic",
+        "limit": -1,
+        "timezoneDisplayOffset": 0,
+        "folds": [
+          "Prix"
+        ]
+      },
+      "encodings": {
+        "dimensions": [
+          {
+            "fid": "date",
+            "name": "date",
+            "basename": "date",
+            "semanticType": "temporal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Quantite",
+            "name": "Quantite",
+            "basename": "Quantite",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Ville",
+            "name": "Ville",
+            "basename": "Ville",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Effectif",
+            "name": "Effectif",
+            "basename": "Effectif",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "gw_mea_key_fid",
+            "name": "Measure names",
+            "analyticType": "dimension",
+            "semanticType": "nominal"
+          }
+        ],
+        "measures": [
+          {
+            "fid": "Prix",
+            "name": "Prix",
+            "basename": "Prix",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "Chiffre_Affaires",
+            "name": "Chiffre d'affaires",
+            "basename": "Chiffre_Affaires",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "gw_count_fid",
+            "name": "Row count",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "computed": true,
+            "expression": {
+              "op": "one",
+              "params": [],
+              "as": "gw_count_fid"
+            }
+          },
+          {
+            "fid": "gw_mea_val_fid",
+            "name": "Measure values",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum"
+          }
+        ],
+        "rows": [
+          {
+            "fid": "Ville",
+            "name": "Ville",
+            "basename": "Ville",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          }
+        ],
+        "columns": [
+          {
+            "fid": "Chiffre_Affaires",
+            "name": "Chiffre d'affaires",
+            "basename": "Chiffre_Affaires",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          }
+        ],
+        "color": [
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          }
+        ],
+        "opacity": [],
+        "size": [],
+        "shape": [],
+        "radius": [],
+        "theta": [],
+        "longitude": [],
+        "latitude": [],
+        "geoId": [],
+        "details": [],
+        "filters": [],
+        "text": []
+      },
+      "layout": {
+        "showActions": false,
+        "showTableSummary": false,
+        "stack": "stack",
+        "interactiveScale": false,
+        "zeroScale": true,
+        "size": {
+          "mode": "full",
+          "width": 320,
+          "height": 200
+        },
+        "format": {},
+        "geoKey": "name",
+        "resolve": {
+          "x": false,
+          "y": false,
+          "color": false,
+          "opacity": false,
+          "shape": false,
+          "size": false
+        }
+      },
+      "visId": "gw_93AG",
+      "name": "Chart 2"
+    },
+    {
+      "config": {
+        "defaultAggregated": true,
+        "geoms": [
+          "auto"
+        ],
+        "coordSystem": "generic",
+        "limit": -1,
+        "timezoneDisplayOffset": 0,
+        "folds": [
+          "Prix"
+        ]
+      },
+      "encodings": {
+        "dimensions": [
+          {
+            "fid": "date",
+            "name": "date",
+            "basename": "date",
+            "semanticType": "temporal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Quantite",
+            "name": "Quantite",
+            "basename": "Quantite",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Produit",
+            "name": "Produit",
+            "basename": "Produit",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Ville",
+            "name": "Ville",
+            "basename": "Ville",
+            "semanticType": "nominal",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "Effectif",
+            "name": "Effectif",
+            "basename": "Effectif",
+            "semanticType": "quantitative",
+            "analyticType": "dimension",
+            "offset": 0
+          },
+          {
+            "fid": "gw_mea_key_fid",
+            "name": "Measure names",
+            "analyticType": "dimension",
+            "semanticType": "nominal"
+          }
+        ],
+        "measures": [
+          {
+            "fid": "Prix",
+            "name": "Prix",
+            "basename": "Prix",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "Chiffre_Affaires",
+            "name": "Chiffre_Affaires",
+            "basename": "Chiffre_Affaires",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "offset": 0
+          },
+          {
+            "fid": "gw_count_fid",
+            "name": "Row count",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum",
+            "computed": true,
+            "expression": {
+              "op": "one",
+              "params": [],
+              "as": "gw_count_fid"
+            }
+          },
+          {
+            "fid": "gw_mea_val_fid",
+            "name": "Measure values",
+            "analyticType": "measure",
+            "semanticType": "quantitative",
+            "aggName": "sum"
+          }
+        ],
+        "rows": [],
+        "columns": [],
+        "color": [],
+        "opacity": [],
+        "size": [],
+        "shape": [],
+        "radius": [],
+        "theta": [],
+        "longitude": [],
+        "latitude": [],
+        "geoId": [],
+        "details": [],
+        "filters": [],
+        "text": []
+      },
+      "layout": {
+        "showActions": false,
+        "showTableSummary": false,
+        "stack": "stack",
+        "interactiveScale": false,
+        "zeroScale": true,
+        "size": {
+          "mode": "auto",
+          "width": 320,
+          "height": 200
+        },
+        "format": {},
+        "geoKey": "name",
+        "resolve": {
+          "x": false,
+          "y": false,
+          "color": false,
+          "opacity": false,
+          "shape": false,
+          "size": false
+        }
+      },
+      "visId": "gw_R8YH",
+      "name": "Ventes par ville et par produit"
+    }
+  ]

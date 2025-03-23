@@ -1,0 +1,76 @@
+2025-03-23 15:19:01,782 - INFO - Starting scheduler at 2025-03-23 16:19:01.782004+01:00
+2025-03-23 15:19:01,782 - INFO - Running initial data fetch...
+2025-03-23 15:19:01,783 - INFO - Starting scheduled data fetch
+2025-03-23 15:19:01,783 - INFO - Initialisation de la base de données...
+2025-03-23 15:19:01,820 - INFO - Import des données de produits...
+2025-03-23 15:19:06,076 - INFO - Colonnes disponibles : ['Nom', 'ID Référence produit', 'Prix', 'Stock']
+2025-03-23 15:19:06,101 - INFO - Import des données de magasins...
+2025-03-23 15:19:09,179 - INFO - Colonnes disponibles : ['ID Magasin', 'Ville', 'Nombre de salariés']
+2025-03-23 15:19:09,185 - INFO - Import des données de ventes...
+2025-03-23 15:19:13,344 - INFO - Colonnes disponibles : ['Date', 'ID Référence produit', 'Quantité', 'ID Magasin']
+2025-03-23 15:19:13,406 - INFO - 
+Analyse des données...
+2025-03-23 15:19:13,452 - INFO - 
+Résultats:
+2025-03-23 15:19:13,453 - INFO - Chiffre d'affaires total : 5268.78 €
+2025-03-23 15:19:13,455 - INFO - 
+Chiffre d'affaires par magasin:
+2025-03-23 15:19:13,457 - INFO - - Lyon (ID: 3): 1059.79 €
+2025-03-23 15:19:13,459 - INFO - - Marseille (ID: 2): 1009.73 €
+2025-03-23 15:19:13,462 - INFO - - Bordeaux (ID: 4): 829.81 €
+2025-03-23 15:19:13,464 - INFO - - Paris (ID: 1): 799.80 €
+2025-03-23 15:19:13,468 - INFO - - Nantes (ID: 6): 739.83 €
+2025-03-23 15:19:13,471 - INFO - - Strasbourg (ID: 7): 579.89 €
+2025-03-23 15:19:13,474 - INFO - - Lille (ID: 5): 249.93 €
+2025-03-23 15:19:13,476 - INFO - 
+Ventes par produit:
+2025-03-23 15:19:13,480 - INFO - - Produit D: 21 unités, CA: 1679.79 €
+2025-03-23 15:19:13,484 - INFO - - Produit E: 35 unités, CA: 1399.65 €
+2025-03-23 15:19:13,485 - INFO - - Produit A: 24 unités, CA: 1199.76 €
+2025-03-23 15:19:13,485 - INFO - - Produit B: 27 unités, CA: 539.73 €
+2025-03-23 15:19:13,486 - INFO - - Produit C: 15 unités, CA: 449.85 €
+2025-03-23 15:19:13,487 - INFO - 
+Stock:
+2025-03-23 15:19:13,489 - INFO - - Quantité totale en stock : 425
+2025-03-23 15:19:13,490 - INFO - - Valeur totale du stock : 21045.75 €
+2025-03-23 15:19:13,492 - INFO - 
+Nombre total d'employés : 57
+2025-03-23 15:19:13,501 - INFO - Data fetch and analysis completed successfully
+2025-03-23 15:31:13,749 - INFO - Starting scheduler at 2025-03-23 16:31:13.749121+01:00
+2025-03-23 15:31:13,750 - INFO - Running initial data fetch...
+2025-03-23 15:31:13,750 - INFO - Starting scheduled data fetch
+2025-03-23 15:31:13,750 - INFO - Initialisation de la base de données...
+2025-03-23 15:31:13,758 - INFO - Import des données de produits...
+2025-03-23 15:31:16,639 - INFO - Colonnes disponibles : ['Nom', 'ID Référence produit', 'Prix', 'Stock']
+2025-03-23 15:31:16,649 - INFO - Import des données de magasins...
+2025-03-23 15:31:19,785 - INFO - Colonnes disponibles : ['ID Magasin', 'Ville', 'Nombre de salariés']
+2025-03-23 15:31:19,787 - INFO - Import des données de ventes...
+2025-03-23 15:31:22,507 - INFO - Colonnes disponibles : ['Date', 'ID Référence produit', 'Quantité', 'ID Magasin']
+2025-03-23 15:31:22,514 - INFO - 
+Analyse des données...
+2025-03-23 15:31:22,522 - INFO - 
+Résultats:
+2025-03-23 15:31:22,522 - INFO - Chiffre d'affaires total : 5268.78 €
+2025-03-23 15:31:22,523 - INFO - 
+Chiffre d'affaires par magasin:
+2025-03-23 15:31:22,523 - INFO - - Lyon (ID: 3): 1059.79 €
+2025-03-23 15:31:22,524 - INFO - - Marseille (ID: 2): 1009.73 €
+2025-03-23 15:31:22,524 - INFO - - Bordeaux (ID: 4): 829.81 €
+2025-03-23 15:31:22,525 - INFO - - Paris (ID: 1): 799.80 €
+2025-03-23 15:31:22,525 - INFO - - Nantes (ID: 6): 739.83 €
+2025-03-23 15:31:22,526 - INFO - - Strasbourg (ID: 7): 579.89 €
+2025-03-23 15:31:22,526 - INFO - - Lille (ID: 5): 249.93 €
+2025-03-23 15:31:22,526 - INFO - 
+Ventes par produit:
+2025-03-23 15:31:22,527 - INFO - - Produit D: 21 unités, CA: 1679.79 €
+2025-03-23 15:31:22,527 - INFO - - Produit E: 35 unités, CA: 1399.65 €
+2025-03-23 15:31:22,528 - INFO - - Produit A: 24 unités, CA: 1199.76 €
+2025-03-23 15:31:22,528 - INFO - - Produit B: 27 unités, CA: 539.73 €
+2025-03-23 15:31:22,529 - INFO - - Produit C: 15 unités, CA: 449.85 €
+2025-03-23 15:31:22,529 - INFO - 
+Stock:
+2025-03-23 15:31:22,530 - INFO - - Quantité totale en stock : 425
+2025-03-23 15:31:22,530 - INFO - - Valeur totale du stock : 21045.75 €
+2025-03-23 15:31:22,531 - INFO - 
+Nombre total d'employés : 57
+2025-03-23 15:31:22,533 - INFO - Data fetch and analysis completed successfully

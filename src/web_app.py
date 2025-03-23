@@ -45,7 +45,6 @@ def load_data():
             p.Nom as Produit,
             p.Prix,
             p.Stock,
-            COUNT(DISTINCT v.ID_Magasin) as Nb_Magasins_Vendeurs,
             SUM(v.Quantite) as Total_Ventes,
             SUM(v.Quantite * p.Prix) as CA_Total
         FROM produits p
@@ -64,9 +63,7 @@ def load_data():
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# Dashboard d'Analyse des Ventes")
     gr.Markdown("""
-    ## Analyse Interactive Multi-Données
-    
-    Explorez vos données :
+    ##Explorez vos données :
     - 📊 Ventes : Analyse complète des ventes et performances
     - 👥 RH & Magasins : Informations sur les effectifs et performances par magasin
     - 📦 Produits : Catalogue et statistiques produits
@@ -86,6 +83,15 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                     use_kernel_calc=True
                 )
                 gr.HTML(pyg_ventes)
+                
+                # Deuxième visualisation des ventes
+                gr.Markdown("### Analyse complémentaire des ventes")
+                pyg_ventes2 = get_html_on_gradio(
+                    df_ventes,
+                    spec="./viz-config-ventes2.json",
+                    use_kernel_calc=True
+                )
+                gr.HTML(pyg_ventes2)
             
             # Tab RH & Magasins
             with gr.Tab("👥 RH & Magasins"):
