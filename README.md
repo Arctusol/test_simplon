@@ -4,15 +4,34 @@ Ce projet implémente une solution d'analyse de données de ventes pour une PME,
 
 ## 🏗 Architecture
 
-Le projet utilise une architecture à deux services :
-bnb
-- **Service Scripts** : Conteneur Python pour l'exécution des scripts d'import et d'analyse
-- **Service Base de Données** : Conteneur SQLite pour le stockage et l'analyse des données
+Le projet utilise une architecture à deux services avec un flux de données complet :
 
 ```mermaid
-graph TB
-    A[Service Scripts<br>Port: 8000] -->|Connexion SQL| B[Service BD SQLite<br>Port: 5432]
+graph TD
+    GS[Google Sheets] -->|Données Source| PS[Python Service]
+    subgraph Docker Environment
+        PS[Python Service] -->|1. Import| DB[(SQLite DB)]
+        PS -->|2. Analyse| DB
+        PS -->|3. Résultats| OUT[Output Console]
+    end
+    
+    subgraph Data Flow
+        CSV1[Ventes CSV] -.->|Import| PS
+        CSV2[Produits CSV] -.->|Import| PS
+        CSV3[Magasins CSV] -.->|Import| PS
+    end
+    
+    subgraph Analyses
+        DB -->|Chiffre Affaires| OUT
+        DB -->|Stock Valeur| OUT
+        DB -->|Performance Magasins| OUT
+    end
 ```
+
+Le système est composé de :
+- **Service Python** : Conteneur exécutant les scripts d'import et d'analyse
+- **Service SQLite** : Base de données stockant et servant les données
+- **Flux de Données** : Pipeline automatisé depuis Google Sheets jusqu'aux analyses
 
 ## 📁 Structure du Projet
 
@@ -22,41 +41,59 @@ graph TB
 ├── scripts/
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   ├── init_db.py
-│   ├── import_data.py
-│   └── analyze_data.py
+│   ├── main.py
 ├── data/
-│   ├── fetch.py
+│   ├── analysis.db
 └── README.md
 ```
 
 ## 🗃 Structure des Données
 
-### Tables
+Le modèle de données suit une structure relationnelle avec trois tables principales :
 
-1. **Magasins**
-   - id_magasin (PK)
-   - ville
-   - nombre_salaries
+```mermaid
+erDiagram
+    MAGASINS ||--o{ VENTES : "réalise"
+    PRODUITS ||--o{ VENTES : "concerne"
+    
+    MAGASINS {
+        integer ID_Magasin PK
+        string Ville
+        integer Nombre_de_salaries
+    }
+    
+    PRODUITS {
+        string ID_Reference_produit PK
+        string Nom
+        decimal Prix
+        integer Stock
+    }
+    
+    VENTES {
+        date Date
+        string ID_Reference_produit FK
+        integer ID_Magasin FK
+        integer Quantite
+        composite_pk(Date,ID_Reference_produit,ID_Magasin)
+    }
+```
 
-2. **Produits**
-   - id_reference (PK)
-   - nom
-   - prix
-   - stock
-
-3. **Ventes**
-   - id (PK)
-   - date_vente
-   - id_reference (FK)
-   - quantite
-   - id_magasin (FK)
+Caractéristiques principales :
+- Table **VENTES** avec clé primaire composite (Date, ID_Reference_produit, ID_Magasin)
+- Relations one-to-many entre MAGASINS/PRODUITS et VENTES
+- Gestion des stocks et prix dans PRODUITS
+- Données géographiques et RH dans MAGASINS
 
 ## 🚀 Installation
 
 1. Construire et démarrer les services :
 ```bash
 docker-compose up --build
+```
+
+2. Interagir avec le docker SQlite
+```bash
+docker exec -it sqlite_service sqlite3 /db/analysis.db
 ```
 
 ## 📊 Fonctionnalités
@@ -106,15 +143,3 @@ docker-compose exec scripts python analyze_data.py
 - Les logs sont disponibles via Docker
 - Les résultats d'analyses sont stockés dans la table `analyses_resultats`
 - Backups automatiques de la base de données
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
