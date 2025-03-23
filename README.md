@@ -34,6 +34,7 @@ flowchart TD
     
     DB -->|Analyses| AN[Analyses]
     AN -->|Résultats| LOG[Logs]
+    AN -->|Export| CSV[CSV History]
     AN -->|Données| DASH[Dashboard]
     
     subgraph Interface Web
@@ -41,12 +42,19 @@ flowchart TD
         DASH -->|RH| VIZ2[Visualisation RH]
         DASH -->|Produits| VIZ3[Visualisation Produits]
     end
+
+    subgraph Historical Data
+        CSV -->|Revenue| H1[revenue.csv]
+        CSV -->|Stores| H2[stores.csv]
+        CSV -->|Products| H3[products.csv]
+        CSV -->|Stock| H4[stock.csv]
+    end
 ```
 
 Le système est composé de :
 - **Service Python** : Conteneur exécutant les scripts d'import et d'analyse
 - **Service SQLite** : Base de données stockant et servant les données
-- **Flux de Données** : Pipeline automatisé depuis Google Sheets jusqu'aux analyses
+- **Flux de Données** : Pipeline automatisé depuis Google Sheets jusqu'aux analyses et exports CSV
 
 ## 📁 Structure du projet
 
@@ -58,18 +66,31 @@ Le système est composé de :
 │   ├── requirements.txt
 │   ├── main.py
 │   ├── web_app.py
+│   ├── csv_exporter.py
 │   ├── viz-config-ventes.json
 │   ├── viz-config-magasins.json
 │   ├── viz-config-produits.json
-│   ├── data_fetcher.log
+│   ├── logs/
+│   │   └── data_fetcher.log
 ├── data/
-│   ├── analysis.db
+│   └── analysis.db
+├── historical_data/
+│   ├── revenue_history/
+│   │   └── revenue.csv
+│   ├── store_history/
+│   │   └── stores.csv
+│   ├── product_history/
+│   │   └── products.csv
+│   └── stock_history/
+│       └── stock.csv
 └── README.md
 ```
 
 Les fichiers de configuration viz-config-*.json contiennent les paramètres de visualisation pour chaque tableau de bord.
 
 ## 🗃 Structure des données
+
+### Base de données SQLite
 
 Le modèle de données suit une structure relationnelle avec trois tables principales :
 
@@ -99,12 +120,34 @@ erDiagram
     }
 ```
 
-Caractéristiques principales :
-- Table **VENTES** avec clé primaire composite sur trois champs (Date, ID_Reference_produit, ID_Magasin)
-- Relations one-to-many entre MAGASINS/PRODUITS et VENTES
-- Table **PRODUITS** gérant le catalogue (prix, stocks)
-- Table **MAGASINS** stockant les informations géographiques et RH
-- Intégrité référentielle assurée par les clés étrangères
+### Fichiers CSV
+
+Les données d'analyse sont exportées dans des fichiers CSV pour un suivi :
+
+1. **revenue.csv**
+   - timestamp
+   - total_revenue
+   - total_employees
+
+2. **stores.csv**
+   - timestamp
+   - store_id
+   - city
+   - revenue
+   - employee_count
+
+3. **products.csv**
+   - timestamp
+   - product_name
+   - units_sold
+   - revenue
+
+4. **stock.csv**
+   - timestamp
+   - total_units
+   - total_value
+
+Chaque fichier est mis à jour avec une nouvelle ligne à chaque analyse (à minuit), permettant un suivi des métriques clés.
 
 ## 🚀 Installation
 
@@ -120,11 +163,12 @@ docker exec -it sqlite_service sqlite3 /db/analysis.db
 
 ## 📊 Fonctionnalités
 
-### Import des données
+### Import et export des données
 - Import automatique et régulier des liens Google Sheets (12h et 00h heure de Paris)
+- Export des analyses dans des fichiers CSV historiques
 - Gestion des doublons
 - Validation des données
-- Logging détaillé des opérations d'import
+- Logging détaillé des opérations
 
 ### Analyses disponibles
 1. **Analyses temporelles**
@@ -187,10 +231,15 @@ Caractéristiques :
 ## 🔍 Monitoring et maintenance
 
 - Les logs sont disponibles via Docker
-- Logs détaillés des imports programmés dans `data_fetcher.log`
+- Logs détaillés dans `/app/logs/data_fetcher.log`
   * Imports automatiques à 12h et 00h (heure de Paris)
-  * Statut des opérations d'import
+  * Statut des opérations d'import et d'export
   * Résultats des analyses
+- Suivi historique dans `/app/historical_data/`
+  * Évolution du chiffre d'affaires
+  * Performance des magasins
+  * Ventes des produits
+  * État des stocks
 - Backups automatiques de la base de données
 - Surveillance des tâches programmées via les logs Docker
   ```bash
