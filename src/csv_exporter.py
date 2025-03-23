@@ -38,25 +38,28 @@ class CSVExporter:
         current_time = datetime.now(paris_tz)
         return current_time.strftime('%Y-%m-%d_%H-%M')
 
-    def generate_filename(self, data_type):
-        """Generate filename with timestamp for a given data type"""
-        timestamp = self.get_timestamp()
-        return os.path.join(self.base_dir, 
-                          self.subdirs[data_type], 
-                          f"{timestamp}_{data_type}.csv")
+    def get_filename(self, data_type):
+        """Get the fixed filename for a given data type"""
+        return os.path.join(self.base_dir,
+                          self.subdirs[data_type],
+                          f"{data_type}.csv")
 
     def export_revenue_data(self, total_revenue, total_employees):
         """Export revenue data to CSV"""
         try:
-            filename = self.generate_filename('revenue')
+            filename = self.get_filename('revenue')
             timestamp = self.get_timestamp()
             
-            with open(filename, 'w', newline='', encoding='utf-8') as f:
+            # Check if file exists to write headers
+            file_exists = os.path.isfile(filename)
+            
+            with open(filename, 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['timestamp', 'total_revenue', 'total_employees'])
+                if not file_exists:
+                    writer.writerow(['timestamp', 'total_revenue', 'total_employees'])
                 writer.writerow([timestamp, f"{total_revenue:.2f}", total_employees])
             
-            logger.info(f"Revenue data exported to {filename}")
+            logger.info(f"Revenue data appended to {filename}")
             return filename
         except Exception as e:
             logger.error(f"Error exporting revenue data: {str(e)}")
@@ -65,12 +68,16 @@ class CSVExporter:
     def export_store_data(self, store_data):
         """Export store performance data to CSV"""
         try:
-            filename = self.generate_filename('stores')
+            filename = self.get_filename('stores')
             timestamp = self.get_timestamp()
             
-            with open(filename, 'w', newline='', encoding='utf-8') as f:
+            # Check if file exists to write headers
+            file_exists = os.path.isfile(filename)
+            
+            with open(filename, 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['timestamp', 'store_id', 'city', 'revenue', 'employee_count'])
+                if not file_exists:
+                    writer.writerow(['timestamp', 'store_id', 'city', 'revenue', 'employee_count'])
                 for store in store_data:
                     writer.writerow([
                         timestamp,
@@ -80,7 +87,7 @@ class CSVExporter:
                         store['employees']
                     ])
             
-            logger.info(f"Store data exported to {filename}")
+            logger.info(f"Store data appended to {filename}")
             return filename
         except Exception as e:
             logger.error(f"Error exporting store data: {str(e)}")
@@ -89,12 +96,16 @@ class CSVExporter:
     def export_product_data(self, product_data):
         """Export product sales data to CSV"""
         try:
-            filename = self.generate_filename('products')
+            filename = self.get_filename('products')
             timestamp = self.get_timestamp()
             
-            with open(filename, 'w', newline='', encoding='utf-8') as f:
+            # Check if file exists to write headers
+            file_exists = os.path.isfile(filename)
+            
+            with open(filename, 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['timestamp', 'product_name', 'units_sold', 'revenue'])
+                if not file_exists:
+                    writer.writerow(['timestamp', 'product_name', 'units_sold', 'revenue'])
                 for product in product_data:
                     writer.writerow([
                         timestamp,
@@ -103,7 +114,7 @@ class CSVExporter:
                         f"{product['revenue']:.2f}"
                     ])
             
-            logger.info(f"Product data exported to {filename}")
+            logger.info(f"Product data appended to {filename}")
             return filename
         except Exception as e:
             logger.error(f"Error exporting product data: {str(e)}")
@@ -112,15 +123,19 @@ class CSVExporter:
     def export_stock_data(self, total_units, total_value):
         """Export stock information to CSV"""
         try:
-            filename = self.generate_filename('stock')
+            filename = self.get_filename('stock')
             timestamp = self.get_timestamp()
             
-            with open(filename, 'w', newline='', encoding='utf-8') as f:
+            # Check if file exists to write headers
+            file_exists = os.path.isfile(filename)
+            
+            with open(filename, 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['timestamp', 'total_units', 'total_value'])
+                if not file_exists:
+                    writer.writerow(['timestamp', 'total_units', 'total_value'])
                 writer.writerow([timestamp, total_units, f"{total_value:.2f}"])
             
-            logger.info(f"Stock data exported to {filename}")
+            logger.info(f"Stock data appended to {filename}")
             return filename
         except Exception as e:
             logger.error(f"Error exporting stock data: {str(e)}")
