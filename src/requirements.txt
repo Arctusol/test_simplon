@@ -1,2 +1,6 @@
 pandas
 requests
+pygwalker
+gradio
+schedule
+pytz
