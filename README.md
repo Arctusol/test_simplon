@@ -1,4 +1,4 @@
-# Analyse des Ventes PME
+# Projet simplon
 
 Ce projet implémente une solution d'analyse de données de ventes pour une PME, utilisant une architecture à deux services Docker pour le traitement et le stockage des données.
 
@@ -33,7 +33,7 @@ Le système est composé de :
 - **Service SQLite** : Base de données stockant et servant les données
 - **Flux de Données** : Pipeline automatisé depuis Google Sheets jusqu'aux analyses
 
-## 📁 Structure du Projet
+## 📁 Structure du projet
 
 ```
 .
@@ -47,7 +47,7 @@ Le système est composé de :
 └── README.md
 ```
 
-## 🗃 Structure des Données
+## 🗃 Structure des données
 
 Le modèle de données suit une structure relationnelle avec trois tables principales :
 
@@ -70,11 +70,10 @@ erDiagram
     }
     
     VENTES {
-        date Date
-        string ID_Reference_produit FK
-        integer ID_Magasin FK
+        date Date PK
+        string ID_Reference_produit PK,FK
+        integer ID_Magasin PK,FK
         integer Quantite
-        composite_pk(Date,ID_Reference_produit,ID_Magasin)
     }
 ```
 
@@ -98,28 +97,28 @@ docker exec -it sqlite_service sqlite3 /db/analysis.db
 
 ## 📊 Fonctionnalités
 
-### Import des Données
+### Import des données
 - Import automatique des liens google sheets
 - Gestion des doublons
 - Validation des données
 
-### Analyses Disponibles
-1. **Analyses Temporelles**
+### Analyses disponibles
+1. **Analyses temporelles**
    - Évolution des ventes quotidiennes
    - Tendances par période
    - Jours de forte/faible activité
 
-2. **Analyses Spatiales**
+2. **Analyses spatiales**
    - Performance par magasin
    - Distribution géographique des ventes
    - Corrélation taille équipe/performance
 
-3. **Analyses Produits**
+3. **Analyses produits**
    - Top des produits vendus
    - Rotation des stocks
    - Chiffre d'affaires par produit
 
-## 🛠 Technologies Utilisées
+## 🛠 Technologies utilisées
 
 - Python 3.11
 - SQLite3
@@ -138,7 +137,7 @@ docker-compose exec scripts python import_data.py
 docker-compose exec scripts python analyze_data.py
 ```
 
-## 🔍 Monitoring et Maintenance
+## 🔍 Monitoring et maintenance
 
 - Les logs sont disponibles via Docker
 - Les résultats d'analyses sont stockés dans la table `analyses_resultats`
