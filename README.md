@@ -184,18 +184,6 @@ Caractéristiques :
 - Filtres dynamiques
 - Mise à jour automatique avec les dernières données
 
-##  Utilisation
-
-1. **Importer les données**
-```bash
-docker-compose exec scripts python import_data.py
-```
-
-2. **Lancer les analyses**
-```bash
-docker-compose exec scripts python analyze_data.py
-```
-
 ## 🔍 Monitoring et maintenance
 
 - Les logs sont disponibles via Docker
@@ -203,7 +191,6 @@ docker-compose exec scripts python analyze_data.py
   * Imports automatiques à 12h et 00h (heure de Paris)
   * Statut des opérations d'import
   * Résultats des analyses
-- Les résultats d'analyses sont stockés dans la table `analyses_resultats`
 - Backups automatiques de la base de données
 - Surveillance des tâches programmées via les logs Docker
   ```bash
