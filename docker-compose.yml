@@ -7,12 +7,15 @@ services:
     volumes:
       - ./data:/db
     restart: always
+    stdin_open: true
+    tty: true
+    working_dir: /db
 
   app:
-    build: 
+    build:
       context: ./src
       dockerfile: dockerfile
-    container_name: python_service
+    container_name: Analyse_des_resultats
     depends_on:
       - db
     volumes:
