@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: nouchka/sqlite3
@@ -15,12 +13,15 @@ services:
     build:
       context: ./src
       dockerfile: dockerfile
-    container_name: Analyse_des_resultats
+    container_name: Analyseur
     depends_on:
       - db
+    ports:
+     - "7860:7860"  # Port Gradio
     volumes:
-      - ./data:/db
-      - ./src:/app
+     - ./data:/db
+     - ./src:/app
     environment:
-      - DATABASE_PATH=/db
-    command: ["python", "/app/main.py"]
+     - DATABASE_PATH=/db
+    command: >
+     bash -c "python /app/main.py && python /app/web_app.py"
