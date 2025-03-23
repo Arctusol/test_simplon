@@ -7,25 +7,18 @@ Ce projet implémente une solution d'analyse de données de ventes pour une PME,
 Le projet utilise une architecture à deux services avec un flux de données complet :
 
 ```mermaid
-graph TD
-    GS[Google Sheets] -->|Données Source| PS[Python Service]
-    subgraph Docker Environment
-        PS[Python Service] -->|1. Import| DB[(SQLite DB)]
-        PS -->|2. Analyse| DB
-        PS -->|3. Résultats| OUT[Output Console]
-    end
+flowchart TD
+    CSV1[Ventes CSV] -->|Import| PS[Python Service]
+    CSV2[Produits CSV] -->|Import| PS
+    CSV3[Magasins CSV] -->|Import| PS
     
-    subgraph Data Flow
-        CSV1[Ventes CSV] -.->|Import| PS
-        CSV2[Produits CSV] -.->|Import| PS
-        CSV3[Magasins CSV] -.->|Import| PS
-    end
+    PS -->|Import données| DB[(SQLite DB)]
+    PS <-->|Requêtes| DB
     
-    subgraph Analyses
-        DB -->|Chiffre Affaires| OUT
-        DB -->|Stock Valeur| OUT
-        DB -->|Performance Magasins| OUT
-    end
+    DB -->|Analyses| AN[Analyses]
+    AN -->|Chiffre Affaires| OUT[Output Console]
+    AN -->|Stock Valeur| OUT
+    AN -->|Performance Magasins| OUT
 ```
 
 Le système est composé de :
