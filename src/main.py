@@ -2,8 +2,22 @@ import sqlite3
 import pandas as pd
 import requests
 import os
-from io import StringIO
+import time
+import schedule
+import pytz
+import logging
 from datetime import datetime
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('data_fetcher.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 def setup_database():
     os.makedirs("/db", exist_ok=True)
@@ -43,14 +57,15 @@ def setup_database():
 def load_csv_from_url(url):
     df = pd.read_csv(url)
     # Rename problematic columns
-    print(f"Colonnes disponibles : {df.columns.tolist()}")
+    logger.info(f"Colonnes disponibles : {df.columns.tolist()}")
     return df
 
 def analyze_data():
     try:
-        print("Initialisation de la base de données...")
+        logger.info("Initialisation de la base de données...")
         conn, cursor = setup_database()
 
+        # Dictionary of CSV URLs
         urls = {
             "ventes": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSawI56WBC64foMT9pKCiY594fBZk9Lyj8_bxfgmq-8ck_jw1Z49qDeMatCWqBxehEVoM6U1zdYx73V/pub?gid=760830694&single=true&output=csv",
             "produits": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSawI56WBC64foMT9pKCiY594fBZk9Lyj8_bxfgmq-8ck_jw1Z49qDeMatCWqBxehEVoM6U1zdYx73V/pub?gid=0&single=true&output=csv",
@@ -59,7 +74,7 @@ def analyze_data():
 
         # Import des données de référence (produits et magasins)
         # Utilisation de INSERT OR IGNORE pour éviter les doublons sur les clés primaires
-        print("Import des données de produits...")
+        logger.info("Import des données de produits...")
         df_produits = load_csv_from_url(urls["produits"])
         for _, row in df_produits.iterrows():
             cursor.execute(
@@ -67,7 +82,7 @@ def analyze_data():
                 (row["Nom"], row["ID Référence produit"], row["Prix"], row["Stock"])
             )
 
-        print("Import des données de magasins...")
+        logger.info("Import des données de magasins...")
         df_magasins = load_csv_from_url(urls["magasins"])
         for _, row in df_magasins.iterrows():
             cursor.execute(
@@ -75,7 +90,7 @@ def analyze_data():
                 (row["ID Magasin"], row["Ville"], row["Nombre de salariés"])
             )
 
-        print("Import des données de ventes...")
+        logger.info("Import des données de ventes...")
         df_ventes = load_csv_from_url(urls["ventes"])
         date_column = 'Date' if 'Date' in df_ventes.columns else 'date'
         
@@ -90,7 +105,7 @@ def analyze_data():
 
         conn.commit()
 
-        print("\nAnalyse des données...")
+        logger.info("\nAnalyse des données...")
         
         # Calcul du chiffre d'affaires total
         cursor.execute("""
@@ -137,27 +152,23 @@ def analyze_data():
         cursor.execute("SELECT SUM(Nombre_de_salaries) FROM magasins")
         total_employes = cursor.fetchone()[0]
 
-        # Display du chiffre d'affaires total
-        print("\nRésultats :")
-        print(f"Chiffre d'affaires total : {chiffre_affaires:.2f} €")
+        # Display results
+        logger.info("\nRésultats:")
+        logger.info(f"Chiffre d'affaires total : {chiffre_affaires:.2f} €")
 
-        # Display du chiffre d'affaires par magasin
-        print(f"\nChiffre d'affaires par magasin :")
+        logger.info("\nChiffre d'affaires par magasin:")
         for magasin in ca_par_magasin:
-            print(f"- {magasin[1]} (ID: {magasin[0]}): {magasin[2]:.2f} €")
+            logger.info(f"- {magasin[1]} (ID: {magasin[0]}): {magasin[2]:.2f} €")
 
-        #Displau des ventes par produit    
-        print(f"\nVentes par produit :")
+        logger.info("\nVentes par produit:")
         for produit in ventes_par_produit:
-            print(f"- {produit[0]}: {produit[1]} unités, CA: {produit[2]:.2f} €")
+            logger.info(f"- {produit[0]}: {produit[1]} unités, CA: {produit[2]:.2f} €")
         
-        # Display de la valeur du stock en attente
-        print(f"\nStock :")
-        print(f"- Quantité totale en stock : {total_stock}")
-        print(f"- Valeur totale du stock : {valeur_stock:.2f} €")
+        logger.info("\nStock:")
+        logger.info(f"- Quantité totale en stock : {total_stock}")
+        logger.info(f"- Valeur totale du stock : {valeur_stock:.2f} €")
 
-        # Display du nombre total d'employés
-        print(f"\nNombre total d'employés : {total_employes}")
+        logger.info(f"\nNombre total d'employés : {total_employes}")
 
     except Exception as e:
         print(f"Erreur : {str(e)}")
@@ -166,5 +177,43 @@ def analyze_data():
         if 'conn' in locals():
             conn.close()
 
+def fetch_and_process_data():
+    """Wrapper function for analyze_data() with logging"""
+    logger.info("Starting scheduled data fetch")
+    try:
+        analyze_data()
+        logger.info("Data fetch and analysis completed successfully")
+    except Exception as e:
+        logger.error(f"Error during data fetch: {str(e)}")
+
+def run_scheduler():
+    """Main scheduler function"""
+    # Use Paris timezone
+    paris_tz = pytz.timezone('Europe/Paris')
+    current_time = datetime.now(paris_tz)
+    
+    logger.info(f"Starting scheduler at {current_time}")
+    
+    # Schedule jobs at noon and midnight Paris time
+    schedule.every().day.at("00:00").do(fetch_and_process_data)
+    schedule.every().day.at("12:00").do(fetch_and_process_data)
+    
+    # Run initial data fetch
+    logger.info("Running initial data fetch...")
+    fetch_and_process_data()
+    
+    # Run the scheduler
+    while True:
+        try:
+            schedule.run_pending()
+            time.sleep(60)  # Check every minute
+        except KeyboardInterrupt:
+            logger.info("Scheduler stopped by user")
+            break
+        except Exception as e:
+            logger.error(f"Scheduler error: {str(e)}")
+            # Wait before retrying
+            time.sleep(300)  # 5 minutes
+
 if __name__ == "__main__":
-    analyze_data()
+    run_scheduler()
