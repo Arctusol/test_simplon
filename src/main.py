@@ -216,9 +216,8 @@ def run_scheduler():
     
     logger.info(f"Starting scheduler at {current_time}")
     
-    # Schedule jobs at noon and midnight Paris time
-    schedule.every().day.at("00:00").do(fetch_and_process_data)
-    schedule.every().day.at("12:00").do(fetch_and_process_data)
+    # Schedule jobs at midnight Paris time
+    schedule.every().day.at("00:05").do(fetch_and_process_data)
     
     # Run initial data fetch
     logger.info("Running initial data fetch...")
